@@ -7,19 +7,24 @@ import '../classes/Lawyers.dart';
 class LeaveReview extends StatefulWidget{
 
   final String uid;
-  final String lawyerId;
-
-  LeaveReview({Key key, this.uid, this.lawyerId}) : super(key: key);
+  final List<String> lawList;
+  LeaveReview({Key key, this.uid, this.lawList}) : super(key: key);
 
   _LeaveReviewState createState() => _LeaveReviewState();
 
 }
 
 class _LeaveReviewState extends State<LeaveReview>{
-  String _chosenValue = ' ';
-  Lawyers _lawyer;
+  String _chosenValue;
+  String _listValue = " ";
   TextEditingController _contentController = new TextEditingController();
-  double _rating;
+  double _rating = 0.0;
+  String _lawyerID;
+
+  String _fName;
+  String _lName;
+  Future<List<String>>  _lawList;
+
 
   /**************Rating Radio Buttons*******************/
   Widget _radio(int value) {
@@ -46,6 +51,7 @@ class _LeaveReviewState extends State<LeaveReview>{
   }
 
   Widget build(BuildContext context){
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Tell Us About Your Experience"),
@@ -75,82 +81,101 @@ class _LeaveReviewState extends State<LeaveReview>{
                         ),
                         child: Column(
                           children: [
-                            StreamBuilder(
-                              stream: FirebaseFirestore.instance.collection('lawyers').snapshots(),
-                              builder: (context, AsyncSnapshot<QuerySnapshot> docs){
-                                if(!docs.hasData){
-                                  return CircularProgressIndicator();
-                                }
-                                if(docs.hasError){
-                                  return CircularProgressIndicator();
+                          DropdownButton<String>(
+                          value: _chosenValue,
+                          onChanged: (value){
 
-                                }
-                                else{
-                                  String _fName;
-                                  String _lName;
-                                  String _name;
-                                  var arr = <String>[];
-                                  for(int i = 0; i < docs.data.docs.length; i++){
-                                    _fName = docs.data.docs[i].get('fName');
-                                    _lName = docs.data.docs[i].get('lName');
-                                    _name = _fName + " " + _lName;
-                                    arr.add(_name);
+                            setState(() {
+                              _chosenValue = value;
+                              _listValue = _chosenValue;
+                            });
+                            print(_chosenValue);
+
+
+                          },
+                          items: widget.lawList.map((String _value){
+                            return DropdownMenuItem<String>(
+                              value: _value,
+                              child: Text(_value),
+
+                            );
+
+                          }).toList(),
+                          hint:  Text("Choose a Lawyer"),
+
+                        ),
+
+                            /*FutureBuilder<List<String>>(
+                                future: widget.lawList,
+                                builder: (context, snapshot){
+                                  
+                                  //if(!snapshot.hasData){return CircularProgressIndicator();}
+                                   if(snapshot.hasData){
+                                    return
                                   }
-                                  print(arr[0]);
-                                  //_chosenValue = arr[0];
-                                  return Column(
-                                    children: [
-                                      DropdownButton<String>(
-                                        items: arr.map<DropdownMenuItem<String>>((String value){
-                                          return DropdownMenuItem(
-                                              value: value,
-                                              child: Text(value)
-                                          );
-                                        }).toList(),
-                                        hint:  Text("Choose a Lawyer"),
-                                        onChanged: (String value){
-                                          setState(() {
-                                            _chosenValue = value;
+                                  else if (snapshot.hasError) {
+                                    return Text("${snapshot.error}");
+                                  }
+                                    return Container();
+                                }),*/
 
+                            /*FutureBuilder(
+                                future: getLawyer(),
+                                builder: (context, AsyncSnapshot<Lawyers> snap){
+                                  if(!snap.hasData){ return Container();}
+                                  else if(snap.hasData){
+                                    return Column(
+                                      children: [
 
-                                          });
-                                        },
-                                      ),
-                                      StreamBuilder(
-                                        stream: FirebaseFirestore.instance.collection('lawyers').where('fName', isEqualTo: _chosenValue.split(" ").first).snapshots(),
-                                        builder: (context, AsyncSnapshot<QuerySnapshot> doc){
-                                          if(!doc.hasData){
-                                            print('fuck');
-                                            return Container();
-                                          }
-                                          else if(doc.hasData){
-                                            //String _lawyerID = doc.data.docs[0].get('id');
-                                            // print(_lawyerID);
-                                            return Column(
-                                              children: [
-                                                Text(doc.data.docs[0].get('fName') + " " + doc.data.docs[0].get('lName')),
-                                                Text(doc.data.docs[0].get('firmName')),
-                                                Text(doc.data.docs[0].get('category')),
-                                                Text(doc.data.docs[0].get('address')),
-                                                Text(doc.data.docs[0].get('phone')),
-
-                                              ],
-                                            );
-                                          }
-                                          else{
-                                            return CircularProgressIndicator();
-                                          }
-                                        },
-
-                                      ),
-
-
-
-                                    ],
-                                  );
+                                      ],
+                                    );
+                                  }
+                                  else{
+                                    return Text('fuck');
+                                  }
                                 }
-                              },
-                            ),
+                            ),*/
+                    StreamBuilder(
+                      stream: FirebaseFirestore.instance.collection('lawyers').where('fName', isEqualTo: _listValue.split(" ").firstWhere((element) => element != ''  , orElse: () => null)).snapshots(),
+                      builder: (context, AsyncSnapshot<QuerySnapshot> doc){
+                        if(!doc.hasData){
+
+                          return Container();
+                        }
+                        else if(doc.hasError){
+
+                          print('fuck');
+                          return Text("fuck");
+
+                        }
+                        else if(doc.hasData){
+
+                          // print(_lawyerID);
+                          //CircularProgressIndicator();
+                          //print(_fName);
+                          _lawyerID = doc.data.docs.first.get('id');
+                          print(_lawyerID);
+                          return Column(
+
+                            children: [
+                              Text(doc.data.docs.first.get('fName')),
+                              Text(doc.data.docs.first.get('lName')),
+                              Text(doc.data.docs.first.get('firmName')),
+                              Text(doc.data.docs.first.get('id')),
+                            ],
+                          );
+                        }
+
+
+                        else{
+                          //print(_lawList.last);
+
+                          return CircularProgressIndicator();
+                        }
+                      },
+
+                    ),
+
                             Padding(
                                 padding: EdgeInsets.only(left: 15, right: 15, top: 5),
                                 child: SingleChildScrollView(
@@ -173,10 +198,10 @@ class _LeaveReviewState extends State<LeaveReview>{
                           ],
                         )
                     ),
-                  ),
+            ),
 
                   RatingBar.builder(
-                      initialRating: 1.0,
+                      initialRating: 0.0,
                       itemCount: 5,
                       itemSize: 70.0,
                       allowHalfRating: true,
@@ -236,7 +261,7 @@ class _LeaveReviewState extends State<LeaveReview>{
                           Review review =  new Review(
                               rid: _rid,
                               uid: widget.uid,
-                              lawyerId: widget.lawyerId,
+                              lawyerId: _lawyerID,
                               content: _contentController.text,
                               rating: '$_rating'
                           );
@@ -246,7 +271,7 @@ class _LeaveReviewState extends State<LeaveReview>{
                           });
 
                           await _firestore.runTransaction((Transaction txn) async{
-                            lawyerCollection.doc(widget.lawyerId).collection('reviews').add({'id': _rid});
+                            lawyerCollection.doc(_lawyerID).collection('reviews').add({'id': _rid});
                             Navigator.of(context).pop();
                           });
                         }

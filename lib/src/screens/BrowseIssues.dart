@@ -31,7 +31,7 @@ class _BrowseIssuesState extends State<BrowseIssues>{
             image: AssetImage('lib/src/assets/books.jpg'), //Make relative path parameter
             fit: BoxFit.cover),
       ),
-      child: FlatButton(
+      child: TextButton(
         child: Text(_pCategory),
 
         onPressed: () async{

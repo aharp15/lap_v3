@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:lap_v3/src/screens/ChatList.dart';
+import 'package:lap_v3/src/screens/LeaveReview.dart';
 import 'package:path/path.dart' as Path;
 
 import 'package:lap_v3/src/screens/BrowseIssues.dart';
@@ -23,6 +25,9 @@ class HomePage extends StatefulWidget{
 
 class _HomePageState extends State<HomePage>{
 
+  String _fName;
+  String _lName;
+  List<String> _lawList;
   final picker = ImagePicker();
   File _imgFile;
 
@@ -67,17 +72,34 @@ class _HomePageState extends State<HomePage>{
 
       appBar: AppBar(
 
-        title: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('users').doc(widget.uid).snapshots(),
-          builder: (context, AsyncSnapshot<DocumentSnapshot> doc){
-            if(doc.hasData){
-              print(widget.uid);
-              return Text("Hello " +  doc.data['fName']);
-            }
-            return CircularProgressIndicator();
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            StreamBuilder(
+              stream: FirebaseFirestore.instance.collection('users').doc(widget.uid).snapshots(),
+              builder: (context, AsyncSnapshot<DocumentSnapshot> doc){
+                if(doc.hasData){
+                  print(widget.uid);
+                  return Padding(
+                    padding: EdgeInsets.only(left: 80.0, right: 80.0),
+                    child: Text("Hello " +  doc.data['fName']),
+                  );
+                }
+                return CircularProgressIndicator();
 
-          },
-        ),
+              },
+            ),
+
+          GestureDetector(
+                 child: Icon(Icons.chat),
+                 onTap: (){
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => ChatList(uid: widget.uid)));
+                 },
+               ),
+
+          ],
+        )
+
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -159,7 +181,7 @@ class _HomePageState extends State<HomePage>{
                           ),
                           onPressed: (){
                             print(widget.uid);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => BrowseIssues(uid: widget.uid,)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => LeaveReview(uid: widget.uid, lawList: _lawList)));
                           },
                         )
                     ),
@@ -195,7 +217,33 @@ class _HomePageState extends State<HomePage>{
                     ),
                   ],
                 ),
-              )
+              ),
+              StreamBuilder(
+                  stream: FirebaseFirestore.instance.collection('lawyers').snapshots(),
+                  builder: (context, AsyncSnapshot<QuerySnapshot> docs){
+                    if(!docs.hasData){
+                      return CircularProgressIndicator();
+                    }
+                    if(docs.hasError){
+                      return CircularProgressIndicator();
+
+                    }
+                    else{
+                      var arr = <String>[];
+
+                      for(int i = 0; i < docs.data.docs.length; i++) {
+                        _fName = docs.data.docs[i].get('fName');
+                        _lName = docs.data.docs[i].get('lName');
+                        var _name = _fName + " " + _lName;
+                        arr.add(_name);
+                      }
+                      print(arr);
+                      //print(_lawList);
+                      _lawList = arr;
+                      return Container();
+                    }
+                  }
+              ),
             ],
           ),
         ),

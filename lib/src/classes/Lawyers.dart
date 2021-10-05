@@ -8,6 +8,7 @@ class Lawyers{
   String phone;
   String firmName;
   String url;
+  String category;
   double rating;
 
   Map<String, dynamic> toJSON ()=> {
@@ -20,9 +21,10 @@ class Lawyers{
     "phone": phone,
     "firmName": firmName,
     "url": url,
+    "category": category,
     "rating": rating,
 
   };
 
-  Lawyers({this.fName, this.lName, this.address, this.city, this.email, this.phone, this.firmName, this.url, this.rating, this.id});
+  Lawyers({this.fName, this.lName, this.address, this.city, this.email, this.phone, this.firmName, this.url, this.category, this.rating, this.id});
 }

@@ -52,8 +52,9 @@ class LawyerReviewsState extends State<LawyerReviews>{
                     
                     //Create Chat room with ID and both users
                     //Can pretty set() up with a list variable
-                    FirebaseFirestore.instance.collection('chat').doc(chatID).set({'users':[widget.uid, _user2]});
-
+                    FirebaseFirestore.instance.collection('chat').doc(chatID).set({'users':[widget.uid, _user2.id]});
+                    FirebaseFirestore.instance.collection('users').doc(widget.uid).collection('chats').doc(chatID).set({'id': chatID});
+  
                     /*FirebaseFirestore.instance.collection('users').doc(widget.uid).collection('chats').get().then((value){
 
                     });*/

@@ -62,7 +62,7 @@ class _LawyerListState extends State<LawyerList>{
                       child: Text("Browse " + widget.category + " Lawyers",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20.0
+                        fontSize: 25.0
                       ),
                       ),
                     ),

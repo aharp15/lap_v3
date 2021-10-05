@@ -158,7 +158,7 @@ String url;
                                             Padding(
                                               padding: const EdgeInsets.all(5.0),
                                               child: Text(
-                                                  doc.data['fName'] + " " + doc.data['lName'],
+                                                  doc.data.get('fName') + " " + doc.data.get('lName'),
                                                   style: TextStyle(
                                                   fontSize: 25.0
                                                 ),
@@ -166,7 +166,7 @@ String url;
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.all(5.0),
-                                              child: Text(doc.data['firmName'],
+                                              child: Text(doc.data.get('firmName'),
                                                 style: TextStyle(
                                                     fontSize: 20.0
                                                 ),
@@ -174,7 +174,7 @@ String url;
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.all(5.0),
-                                              child: Text(doc.data['category'],
+                                              child: Text(doc.data.get('category'),
                                                 style: TextStyle(
                                                     fontSize: 20.0
                                                 ),
@@ -182,7 +182,7 @@ String url;
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.all(5.0),
-                                              child: Text(doc.data['phone'],
+                                              child: Text(doc.data.get('phone'),
                                                 style: TextStyle(
                                                     fontSize: 20.0
                                                 ),
@@ -190,7 +190,7 @@ String url;
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.all(5.0),
-                                              child: Text(doc.data['email'],
+                                              child: Text(doc.data.get('email'),
                                                 style: TextStyle(
                                                     fontSize: 20.0
                                                 ),
@@ -198,7 +198,7 @@ String url;
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.all(5.0),
-                                              child: Text(doc.data['websiteUrl'],
+                                              child: Text(doc.data.get('websiteUrl'),
                                                 style: TextStyle(
                                                     fontSize: 20.0
                                                 ),
@@ -260,30 +260,26 @@ String url;
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(top: 30.0),
+                                    margin: EdgeInsets.only(top: 50.0),
                                     decoration: BoxDecoration(
-                                        color: Colors.white
+                                        color: Colors.blueAccent
                                     ),
                                     child: TextButton(
                                       child: Text("Ask a Past Client"),
+                                      style: TextButton.styleFrom(
+                                        primary: Colors.white,
+                                        textStyle: TextStyle(
+                                          fontSize: 20
+                                        )
+                                      ),
+
                                       onPressed: (){
                                         Navigator.push(context, MaterialPageRoute(builder: (context) => LawyerReviews(lawyer: widget.lawyer, uid: widget.uid)));
 
                                       },
                                     ),
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 40.0),
-                                    decoration: BoxDecoration(
-                                        color: Colors.yellow[300]
-                                    ),
-                                    child: TextButton(
-                                      child: Text("Leave A Review"),
-                                      onPressed: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => LeaveReview(uid: widget.uid, lawyerId: widget.lawyer.id)));
-                                      },
-                                    ),
-                                  ),
+
                                 ],
                               ),
                           ),
