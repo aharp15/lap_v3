@@ -43,7 +43,9 @@ class ChatListState extends State<ChatList>{
                                   builder: (context, AsyncSnapshot<DocumentSnapshot> doc){
                                     if(!doc.hasData){return CircularProgressIndicator();}
                                     else{
-                                      return Text(doc.data.get('fName'));
+                                      return Text(doc.data.get('fName'),
+                                        style: TextStyle(fontSize: 25.0),
+                                      );
                                     }
                                   });
                             }

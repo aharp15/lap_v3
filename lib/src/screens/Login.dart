@@ -19,8 +19,12 @@ class _LoginState extends State<Login>{
 
   String _email, _password, _uid;
   final _auth = FirebaseAuth.instance;
-  final _formKey = new GlobalKey<FormState>();
+  static final _formKey = new GlobalKey<FormState>();
 
+  void initState(){
+    super.initState();
+
+  }
   Future<Widget> Noti(e) async{
 
     return showDialog(context: context,
@@ -70,8 +74,7 @@ class _LoginState extends State<Login>{
                 fit: BoxFit.cover),
           ),
           child: Center(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(50.0, 300.0, 50.0, 200.0),
+
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(
@@ -138,7 +141,6 @@ class _LoginState extends State<Login>{
                   ),
                 ),
               ),
-            ),
           ),
         ),
 
