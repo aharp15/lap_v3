@@ -67,48 +67,46 @@ class _LeaveReviewState extends State<LeaveReview>{
           child: Padding(
             padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 100.0),
             child: Container(
-              child: Column(
-                children: [
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+
+                      Container(
+                          height: 300.0,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[50],
+                              borderRadius: BorderRadius.circular(15.0)
+                          ),
+                          child: Column(
+                            children: [
+                              DropdownButton<String>(
+                                value: _chosenValue,
+                                onChanged: (value){
+
+                                  setState(() {
+                                    _chosenValue = value;
+                                    _listValue = _chosenValue;
+                                  });
+                                  print(_chosenValue);
 
 
-                  Padding(
-                    padding: EdgeInsets.only(top: 50.0),
-                    child: Container(
-                        height: 300.0,
-                        decoration: BoxDecoration(
-                            color: Colors.grey[50],
-                            borderRadius: BorderRadius.circular(15.0)
-                        ),
-                        child: Column(
-                          children: [
-                          DropdownButton<String>(
-                          value: _chosenValue,
-                          onChanged: (value){
+                                },
+                                items: widget.lawList.map((String _value){
+                                  return DropdownMenuItem<String>(
+                                    value: _value,
+                                    child: Text(_value),
 
-                            setState(() {
-                              _chosenValue = value;
-                              _listValue = _chosenValue;
-                            });
-                            print(_chosenValue);
+                                  );
 
+                                }).toList(),
+                                hint:  Text("Choose a Lawyer"),
 
-                          },
-                          items: widget.lawList.map((String _value){
-                            return DropdownMenuItem<String>(
-                              value: _value,
-                              child: Text(_value),
+                              ),
 
-                            );
-
-                          }).toList(),
-                          hint:  Text("Choose a Lawyer"),
-
-                        ),
-
-                            /*FutureBuilder<List<String>>(
+                              /*FutureBuilder<List<String>>(
                                 future: widget.lawList,
                                 builder: (context, snapshot){
-                                  
+
                                   //if(!snapshot.hasData){return CircularProgressIndicator();}
                                    if(snapshot.hasData){
                                     return
@@ -119,7 +117,7 @@ class _LeaveReviewState extends State<LeaveReview>{
                                     return Container();
                                 }),*/
 
-                            /*FutureBuilder(
+                              /*FutureBuilder(
                                 future: getLawyer(),
                                 builder: (context, AsyncSnapshot<Lawyers> snap){
                                   if(!snap.hasData){ return Container();}
@@ -135,150 +133,153 @@ class _LeaveReviewState extends State<LeaveReview>{
                                   }
                                 }
                             ),*/
-                    StreamBuilder(
-                      stream: FirebaseFirestore.instance.collection('lawyers').where('fName', isEqualTo: _listValue.split(" ").firstWhere((element) => element != ''  , orElse: () => null)).snapshots(),
-                      builder: (context, AsyncSnapshot<QuerySnapshot> doc){
-                        if(!doc.hasData){
+                              StreamBuilder(
+                                stream: FirebaseFirestore.instance.collection('lawyers').where('fName', isEqualTo: _listValue.split(" ").firstWhere((element) => element != ''  , orElse: () => null)).snapshots(),
+                                builder: (context, AsyncSnapshot<QuerySnapshot> doc){
+                                  if(!doc.hasData){
 
-                          return Container();
-                        }
-                        else if(doc.hasError){
+                                    return Container();
+                                  }
+                                  else if(doc.hasError){
 
-                          print('fuck');
-                          return Text("fuck");
+                                    print('fuck');
+                                    return Text("fuck");
 
-                        }
-                        else if(doc.hasData){
+                                  }
+                                  else if(doc.hasData){
 
-                          // print(_lawyerID);
-                          //CircularProgressIndicator();
-                          //print(_fName);
-                          _lawyerID = doc.data.docs.first.get('id');
-                          print(_lawyerID);
-                          return Column(
+                                    // print(_lawyerID);
+                                    //CircularProgressIndicator();
+                                    //print(_fName);
+                                    _lawyerID = doc.data.docs.first.get('id');
+                                    print(_lawyerID);
+                                    return Column(
 
-                            children: [
-                              Text(doc.data.docs.first.get('fName')),
-                              Text(doc.data.docs.first.get('lName')),
-                              Text(doc.data.docs.first.get('firmName')),
-                              Text(doc.data.docs.first.get('id')),
-                            ],
-                          );
-                        }
+                                      children: [
+                                        Text(doc.data.docs.first.get('fName')),
+                                        Text(doc.data.docs.first.get('lName')),
+                                        Text(doc.data.docs.first.get('firmName')),
+                                        Text(doc.data.docs.first.get('id')),
+                                      ],
+                                    );
+                                  }
 
 
-                        else{
-                          //print(_lawList.last);
+                                  else{
+                                    //print(_lawList.last);
 
-                          return CircularProgressIndicator();
-                        }
-                      },
+                                    return CircularProgressIndicator();
+                                  }
+                                },
 
-                    ),
+                              ),
 
-                            Padding(
-                                padding: EdgeInsets.only(left: 15, right: 15, top: 5),
-                                child: SingleChildScrollView(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey[350],
-                                        borderRadius: BorderRadius.circular(5.0)
-                                    ),
-                                    child: TextFormField(
-                                      controller: _contentController,
-                                      maxLines: 6,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
+                              Padding(
+                                  padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+                                  child: SingleChildScrollView(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey[350],
+                                          borderRadius: BorderRadius.circular(5.0)
                                       ),
+                                      child: TextFormField(
+                                        controller: _contentController,
+                                        maxLines: 6,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                        ),
 
+                                      ),
                                     ),
-                                  ),
-                                )
-                            )
-                          ],
-                        )
+                                  )
+                              )
+                            ],
+                          )
+                      ),
+
+                    Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: RatingBar.builder(
+                          initialRating: 0.0,
+                          itemCount: 5,
+                          itemSize: 65.0,
+                          allowHalfRating: true,
+                          itemBuilder: (context, index){
+                            switch (index) {
+                              case 0:
+                                return Icon(
+                                  Icons.star,
+                                  color: Colors.yellow,
+                                );
+                              case 1:
+                                return Icon(
+                                  Icons.star,
+                                  color: Colors.yellow,
+                                );
+                              case 2:
+                                return Icon(
+                                  Icons.star,
+                                  color: Colors.yellow,
+                                );
+                              case 3:
+                                return Icon(
+                                  Icons.star,
+                                  color: Colors.yellow,
+                                );
+                              case 4:
+                                return Icon(
+                                  Icons.star,
+                                  color: Colors.yellow,
+                                );
+                            }
+                            return null;
+                          },
+                          onRatingUpdate: (value){
+                            setState(() {
+                              _rating = value;
+                            });
+                            print(_rating);
+                          }
+                      ),
                     ),
-            ),
 
-                  RatingBar.builder(
-                      initialRating: 0.0,
-                      itemCount: 5,
-                      itemSize: 70.0,
-                      allowHalfRating: true,
-                      itemBuilder: (context, index){
-                        switch (index) {
-                          case 0:
-                            return Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            );
-                          case 1:
-                            return Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            );
-                          case 2:
-                            return Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            );
-                          case 3:
-                            return Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            );
-                          case 4:
-                            return Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            );
-                        }
-                        return null;
-                      },
-                      onRatingUpdate: (value){
-                        setState(() {
-                          _rating = value;
-                        });
-                        print(_rating);
-                      }
-                  ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 50.0),
+                      child: ElevatedButton(
+                          child: Text("Submit"),
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.blueAccent,
+                              minimumSize: Size(150.0, 50.0)
+                          ),
+                          onPressed: () async {
+                            print(widget.uid);
+                            FirebaseFirestore _firestore =  FirebaseFirestore.instance;
+                            CollectionReference reviewCollection = _firestore.collection('reviews');
+                            CollectionReference lawyerCollection = _firestore.collection('lawyers');
+                            String _rid = "r" + DateTime.now().toString();
 
-                  Padding(
-                    padding: EdgeInsets.only(top: 50.0),
-                    child: ElevatedButton(
-                        child: Text("Submit"),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blueAccent,
-                          minimumSize: Size(150.0, 50.0)
-                        ),
-                        onPressed: () async {
-                          print(widget.uid);
-                          FirebaseFirestore _firestore =  FirebaseFirestore.instance;
-                          CollectionReference reviewCollection = _firestore.collection('reviews');
-                          CollectionReference lawyerCollection = _firestore.collection('lawyers');
-                          String _rid = "r" + DateTime.now().toString();
+                            Review review =  new Review(
+                                rid: _rid,
+                                uid: widget.uid,
+                                lawyerId: _lawyerID,
+                                content: _contentController.text,
+                                rating: '$_rating'
+                            );
 
-                          Review review =  new Review(
-                              rid: _rid,
-                              uid: widget.uid,
-                              lawyerId: _lawyerID,
-                              content: _contentController.text,
-                              rating: '$_rating'
-                          );
+                            await _firestore.runTransaction((Transaction txn) async{
+                              reviewCollection.doc(_rid).set(review.toJSON());
+                            });
 
-                          await _firestore.runTransaction((Transaction txn) async{
-                            reviewCollection.doc(_rid).set(review.toJSON());
-                          });
-
-                          await _firestore.runTransaction((Transaction txn) async{
-                            lawyerCollection.doc(_lawyerID).collection('reviews').add({'id': _rid});
-                            Navigator.of(context).pop();
-                          });
-                        }
-                    ),
-                  )
-                ],
-              ),
+                            await _firestore.runTransaction((Transaction txn) async{
+                              lawyerCollection.doc(_lawyerID).collection('reviews').add({'id': _rid});
+                              Navigator.of(context).pop();
+                            });
+                          }
+                      ),
+                    )
+                  ],
+                ),
+              )
             ),
           ),
         ),

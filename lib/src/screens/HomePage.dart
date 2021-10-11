@@ -80,10 +80,7 @@ class _HomePageState extends State<HomePage>{
               builder: (context, AsyncSnapshot<DocumentSnapshot> doc){
                 if(doc.hasData){
                   print(widget.uid);
-                  return Padding(
-                    padding: EdgeInsets.only(left: 80.0, right: 80.0),
-                    child: Text("Hello " +  doc.data['fName']),
-                  );
+                  return Text("Hello " +  doc.data['fName']);
                 }
                 return CircularProgressIndicator();
 

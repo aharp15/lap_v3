@@ -87,6 +87,7 @@ class _LawyerListState extends State<LawyerList>{
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         //avatar
                                         CircleAvatar(
@@ -95,7 +96,7 @@ class _LawyerListState extends State<LawyerList>{
                                           backgroundImage: NetworkImage(docs.data.docs[index].get('picUrl')),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 80.0),
+                                          padding: const EdgeInsets.only(right: 60.0),
                                           child: Column(
                                             children: [
                                               Text(docs.data.docs[index].get('fName') + " " + docs.data.docs[index].get('lName'), style: TextStyle(
