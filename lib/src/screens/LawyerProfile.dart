@@ -136,129 +136,128 @@ String url;
                         ),
                       ),
 
-                      Padding(
-                          padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                          child: Card(
-                              child: Container(
-                                width: 300.0,
-                                height: 300.0,
-                                child: StreamBuilder(
-                                  stream: widget.lawyer.snapshots(),
-                                  builder: (context, AsyncSnapshot<DocumentSnapshot> doc){
+                      SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                              child: Card(
+                                  child: Container(
+                                    width: 300.0,
+                                    height: 300.0,
+                                    child: StreamBuilder(
+                                      stream: widget.lawyer.snapshots(),
+                                      builder: (context, AsyncSnapshot<DocumentSnapshot> doc){
 
-                                    CollectionReference reviews = widget.lawyer.collection('reviews');
+                                        CollectionReference reviews = widget.lawyer.collection('reviews');
 
-                                    if(doc.hasData){
-                                      print(widget.lawyer.id);
+                                        if(doc.hasData){
+                                          print(widget.lawyer.id);
 
-                                      return SizedBox(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.all(5.0),
-                                              child: Text(
-                                                  doc.data.get('fName') + " " + doc.data.get('lName'),
-                                                  style: TextStyle(
-                                                  fontSize: 25.0
+                                          return SizedBox(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.all(5.0),
+                                                  child: Text(
+                                                    doc.data.get('fName') + " " + doc.data.get('lName'),
+                                                    style: TextStyle(
+                                                        fontSize: 25.0
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.all(5.0),
-                                              child: Text(doc.data.get('firmName'),
-                                                style: TextStyle(
-                                                    fontSize: 20.0
+                                                Padding(
+                                                  padding: const EdgeInsets.all(5.0),
+                                                  child: Text(doc.data.get('firmName'),
+                                                    style: TextStyle(
+                                                        fontSize: 20.0
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.all(5.0),
-                                              child: Text(doc.data.get('category'),
-                                                style: TextStyle(
-                                                    fontSize: 20.0
+                                                Padding(
+                                                  padding: const EdgeInsets.all(5.0),
+                                                  child: Text(doc.data.get('category'),
+                                                    style: TextStyle(
+                                                        fontSize: 20.0
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.all(5.0),
-                                              child: Text(doc.data.get('phone'),
-                                                style: TextStyle(
-                                                    fontSize: 20.0
+                                                Padding(
+                                                  padding: const EdgeInsets.all(5.0),
+                                                  child: Text(doc.data.get('phone'),
+                                                    style: TextStyle(
+                                                        fontSize: 20.0
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.all(5.0),
-                                              child: Text(doc.data.get('email'),
-                                                style: TextStyle(
-                                                    fontSize: 20.0
+                                                Padding(
+                                                  padding: const EdgeInsets.all(5.0),
+                                                  child: Text(doc.data.get('email'),
+                                                    style: TextStyle(
+                                                        fontSize: 20.0
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.all(5.0),
-                                              child: Text(doc.data.get('websiteUrl'),
-                                                style: TextStyle(
-                                                    fontSize: 20.0
+                                                Padding(
+                                                  padding: const EdgeInsets.all(5.0),
+                                                  child: Text(doc.data.get('websiteUrl'),
+                                                    style: TextStyle(
+                                                        fontSize: 20.0
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            StreamBuilder(
-                                                stream: FirebaseFirestore.instance.collection('reviews').where('lawyerId', isEqualTo: widget.lawyer.id).snapshots(),
-                                                builder: (context, AsyncSnapshot<QuerySnapshot> docs){
-                                                  if(!docs.hasData){return Container();}
-                                                  else {
-                                                    var stars = [];
+                                                StreamBuilder(
+                                                    stream: FirebaseFirestore.instance.collection('reviews').where('lawyerId', isEqualTo: widget.lawyer.id).snapshots(),
+                                                    builder: (context, AsyncSnapshot<QuerySnapshot> docs){
+                                                      if(!docs.hasData){return Container();}
+                                                      else {
+                                                        var stars = [];
 
-                                                    double ratingsToAvg = 0.0;
-                                                    double overallRating = 0.0;
-                                                    for(int i = 0; i < docs.data.docs.length; i++){
-                                                      ratingsToAvg += double.parse(docs.data.docs[i].get('rating'));
+                                                        double ratingsToAvg = 0.0;
+                                                        double overallRating = 0.0;
+                                                        for(int i = 0; i < docs.data.docs.length; i++){
+                                                          ratingsToAvg += double.parse(docs.data.docs[i].get('rating'));
+                                                        }
+
+
+                                                        overallRating = ratingsToAvg/docs.data.docs.length;
+
+                                                        FirebaseFirestore.instance.collection('lawyers').doc(widget.lawyer.id).update({'rating': overallRating});
+                                                        for(int i = 0; i < overallRating.ceil(); i++){
+                                                          stars.add(Icon(Icons.star, color: Colors.yellow, size: 40.0,));
+                                                        }
+                                                        return Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            ...stars,
+                                                          ],
+                                                        );
+
+                                                      }
+
                                                     }
-
-
-                                                    overallRating = ratingsToAvg/docs.data.docs.length;
-
-                                                    FirebaseFirestore.instance.collection('lawyers').doc(widget.lawyer.id).update({'rating': overallRating});
-                                                    for(int i = 0; i < overallRating.ceil(); i++){
-                                                      stars.add(Icon(Icons.star, color: Colors.yellow, size: 40.0,));
-                                                    }
-                                                    return Row(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: <Widget>[
-                                                          ...stars,
-                                                        ],
-                                                      );
-
-                                                  }
-
-                                                }
-                                            )
-                                            /*MAKE FIELDS FOR:
+                                                )
+                                                /*MAKE FIELDS FOR:
                             * address
                             * phone number
                             * website
                             * firm title
                             * Get rating code*/
-                                          ],
-                                        ),
-                                      );
-                                    }
-                                    return CircularProgressIndicator();
-                                  },
-                                ),
-                              )
-                          ),
-                      ),
-
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
+                                              ],
+                                            ),
+                                          );
+                                        }
+                                        return CircularProgressIndicator();
+                                      },
+                                    ),
+                                  )
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(20.0),
+                              child:
                                   Container(
                                     margin: EdgeInsets.only(top: 50.0),
                                     decoration: BoxDecoration(
@@ -267,10 +266,10 @@ String url;
                                     child: TextButton(
                                       child: Text("Ask a Past Client"),
                                       style: TextButton.styleFrom(
-                                        primary: Colors.white,
-                                        textStyle: TextStyle(
-                                          fontSize: 20
-                                        )
+                                          primary: Colors.white,
+                                          textStyle: TextStyle(
+                                              fontSize: 20
+                                          )
                                       ),
 
                                       onPressed: (){
@@ -280,11 +279,11 @@ String url;
                                     ),
                                   ),
 
-                                ],
-                              ),
-                          ),
+                            ),
+                          ],
                         ),
-                      )
+                      ),
+
                     ],
                   ),
                 ),
