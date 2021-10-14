@@ -77,7 +77,6 @@ String url;
             ),
         child: Center(
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Container(
                         height: 150.0,
