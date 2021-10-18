@@ -198,7 +198,7 @@ class _LeaveReviewState extends State<LeaveReview>{
                       ),
 
                     Padding(
-                      padding: EdgeInsets.all(20.0),
+                      padding: EdgeInsets.all(10.0),
                       child: RatingBar.builder(
                           initialRating: 0.0,
                           itemCount: 5,
@@ -244,7 +244,7 @@ class _LeaveReviewState extends State<LeaveReview>{
                     ),
 
                     Padding(
-                      padding: EdgeInsets.only(top: 50.0),
+                      padding: EdgeInsets.only(top: 10.0, bottom: 20.0),
                       child: ElevatedButton(
                           child: Text("Submit"),
                           style: ElevatedButton.styleFrom(

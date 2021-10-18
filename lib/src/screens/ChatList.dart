@@ -38,8 +38,15 @@ class ChatListState extends State<ChatList>{
                             if(!doc.hasData){return CircularProgressIndicator();}
                             else{
                               var list = doc.data.data()['users'];
+                              var id;
+
+                              if(list[0] != widget.uid){
+                                id = list[0];
+                              }else{
+                                id = list[1];
+                              }
                               return StreamBuilder(
-                                  stream: FirebaseFirestore.instance.collection('users').doc(list[1]).snapshots(),
+                                  stream: FirebaseFirestore.instance.collection('users').doc(id).snapshots(),
                                   builder: (context, AsyncSnapshot<DocumentSnapshot> doc){
                                     if(!doc.hasData){return CircularProgressIndicator();}
                                     else{

@@ -258,7 +258,7 @@ String url;
                               padding: EdgeInsets.all(20.0),
                               child:
                                   Container(
-                                    margin: EdgeInsets.only(top: 50.0),
+                                    margin: EdgeInsets.only(top: 30.0),
                                     decoration: BoxDecoration(
                                         color: Colors.blueAccent
                                     ),
