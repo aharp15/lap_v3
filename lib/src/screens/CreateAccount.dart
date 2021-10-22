@@ -86,7 +86,19 @@ class _CreateAccountState extends State<CreateAccount>{
               children: [
                 TextField(
                   decoration: InputDecoration(
-                    hintText: "First Name",
+                      hintText: "First Name",
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                              color: Colors.blueAccent
+                          )
+                      ),
+                      errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                              color: Colors.redAccent
+                          )
+                      )
                   ),
                   onChanged: (value){
                     setState(() {
@@ -95,7 +107,19 @@ class _CreateAccountState extends State<CreateAccount>{
                   },
                 ),TextField(
                   decoration: InputDecoration(
-                    hintText: "Last Name",
+                      hintText: "Last Name",
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                              color: Colors.blueAccent
+                          )
+                      ),
+                      errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                              color: Colors.redAccent
+                          )
+                      )
                   ),
                   onChanged: (value){
                     setState(() {
@@ -125,7 +149,19 @@ class _CreateAccountState extends State<CreateAccount>{
                   },
                 ),TextField(
                   decoration: InputDecoration(
-                    hintText: "Password",
+                      hintText: "Password",
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                              color: Colors.blueAccent
+                          )
+                      ),
+                      errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                              color: Colors.redAccent
+                          )
+                      )
                   ),
                   onChanged: (value){
                     setState(() {
@@ -134,7 +170,19 @@ class _CreateAccountState extends State<CreateAccount>{
                   },
                 ),TextField(
                   decoration: InputDecoration(
-                    hintText: "Gender",
+                      hintText: "Gender",
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                              color: Colors.blueAccent
+                          )
+                      ),
+                      errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                              color: Colors.redAccent
+                          )
+                      )
                   ),
                   onChanged: (value){
                     setState(() {
